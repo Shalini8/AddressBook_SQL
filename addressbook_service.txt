@@ -1,0 +1,292 @@
+#UC1: create a database address_book_service
+
+ CREATE DATABASE address_book_service;
+USE address_book_service;
+
+#UC2: create address_book TABLE.
+
+mysql> CREATE TABLE address_book
+    -> (
+    ->  first_name      VARCHAR(50) NOT NULL,
+    ->  last_name       VARCHAR(50) NOT NULL,
+    ->  address         VARCHAR(100) NOT NULL,
+    ->  city            VARCHAR(50) NOT NULL,
+    ->  state           VARCHAR(50) NOT NULL,
+    ->  zip             VARCHAR(10) NOT NULL,
+    ->  phone           VARCHAR(15) NOT NULL,
+    ->  email           VARCHAR(100) NOT NULL
+    -> );
+mysql> describe address_book;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| first_name | varchar(50)  | NO   |     | NULL    |       |
+| last_name  | varchar(50)  | NO   |     | NULL    |       |
+| address    | varchar(100) | NO   |     | NULL    |       |
+| city       | varchar(50)  | NO   |     | NULL    |       |
+| state      | varchar(50)  | NO   |     | NULL    |       |
+| zip        | varchar(10)  | NO   |     | NULL    |       |
+| phone      | varchar(15)  | NO   |     | NULL    |       |
+| email      | varchar(100) | NO   |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+
+# UC3: insert new Contacts.
+mysql> INSERT INTO address_book VALUES
+    -> ( 'Shaan', 'Raut', 'Sector 1', 'jagdalpur', 'Chhattisgarh', '123456', '9876510123', 'shaan@email.com' ),
+    -> ( 'Sanju', 'joshi', 'Sector 1', 'raipur', 'Chhattisgarh', '494001', '9845632178', 'sanju@email.com' ),
+    -> ( 'Zoya', 'Khan', 'Sector 5', 'ambikapur', 'Chhattisgarh', '494221', '9845634578', 'zoya@email.com' ),
+    -> ( 'Shalini', 'Pandey', 'Asna', 'jagdalpur', 'Chhattisgarh', '4942221', '9845634578', 'shalu@email.com' ),
+    -> ( 'Aanya', 'Pandey', 'asokaratan', 'katni', 'MadhyaPradesh', '4920001', '932974578', 'aanya@email.com' );
+
+mysql> select * from address_book;
++------------+-----------+------------+-----------+---------------+---------+------------+-----------------+
+| first_name | last_name | address    | city      | state         | zip     | phone      | email           |
++------------+-----------+------------+-----------+---------------+---------+------------+-----------------+
+| Shaan      | Raut      | Sector 1   | jagdalpur | Chhattisgarh  | 123456  | 9876510123 | shaan@email.com |
+| Sanju      | joshi     | Sector 1   | raipur    | Chhattisgarh  | 494001  | 9845632178 | sanju@email.com |
+| Zoya       | Khan      | Sector 5   | ambikapur | Chhattisgarh  | 494221  | 9845634578 | zoya@email.com  |
+| Shalini    | Pandey    | Asna       | jagdalpur | Chhattisgarh  | 4942221 | 9845634578 | shalu@email.com |
+| Aanya      | Pandey    | asokaratan | katni     | MadhyaPradesh | 4920001 | 932974578  | aanya@email.com |
++------------+-----------+------------+-----------+---------------+---------+------------+-----------------+
+5 rows in set (0.00 sec)
+
+#UC4: EDIT the existing CONTACT.
+
+mysql> UPDATE address_book set state = 'maharastra' where first_name = 'Shaan';
+Query OK, 1 row affected (0.10 sec)
+Rows matched: 1  Changed: 1  Warnings: 0
+
+mysql> select * from address_book;
++------------+-----------+------------+-----------+---------------+---------+------------+-----------------+
+| first_name | last_name | address    | city      | state         | zip     | phone      | email           |
++------------+-----------+------------+-----------+---------------+---------+------------+-----------------+
+| Shaan      | Raut      | Sector 1   | jagdalpur | maharastra    | 123456  | 9876510123 | shaan@email.com |
+| Sanju      | joshi     | Sector 1   | raipur    | Chhattisgarh  | 494001  | 9845632178 | sanju@email.com |
+| Zoya       | Khan      | Sector 5   | ambikapur | Chhattisgarh  | 494221  | 9845634578 | zoya@email.com  |
+| Shalini    | Pandey    | Asna       | jagdalpur | Chhattisgarh  | 4942221 | 9845634578 | shalu@email.com |
+| Aanya      | Pandey    | asokaratan | katni     | MadhyaPradesh | 4920001 | 932974578  | aanya@email.com |
++------------+-----------+------------+-----------+---------------+---------+------------+-----------------+
+
+#UC5: DELETE a contact:
+
+mysql> DELETE from address_book where first_name = 'Shaan';
+Query OK, 1 row affected (0.17 sec)
+
+mysql> select * from address_book;
++------------+-----------+------------+-----------+---------------+---------+------------+-----------------+
+| first_name | last_name | address    | city      | state         | zip     | phone      | email           |
++------------+-----------+------------+-----------+---------------+---------+------------+-----------------+
+| Sanju      | joshi     | Sector 1   | raipur    | Chhattisgarh  | 494001  | 9845632178 | sanju@email.com |
+| Zoya       | Khan      | Sector 5   | ambikapur | Chhattisgarh  | 494221  | 9845634578 | zoya@email.com  |
+| Shalini    | Pandey    | Asna       | jagdalpur | Chhattisgarh  | 4942221 | 9845634578 | shalu@email.com |
+| Aanya      | Pandey    | asokaratan | katni     | MadhyaPradesh | 4920001 | 932974578  | aanya@email.com |
++------------+-----------+------------+-----------+---------------+---------+------------+-----------------+
+4 rows in set (0.00 sec)
+5 rows in set (0.01 sec)
+
+#UC6: RETRIEVE person belonging to CITY or STATE
+
+
+mysql> select * from address_book
+    -> where city = 'jagdalpur';
++------------+-----------+---------+-----------+--------------+---------+------------+-----------------+
+| first_name | last_name | address | city      | state        | zip     | phone      | email           |
++------------+-----------+---------+-----------+--------------+---------+------------+-----------------+
+| Shalini    | Pandey    | Asna    | jagdalpur | Chhattisgarh | 4942221 | 9845634578 | shalu@email.com |
++------------+-----------+---------+-----------+--------------+---------+------------+-----------------+
+1 row in set (0.00 sec)
+
+mysql> select * from address_book
+    -> where state = 'chhattisgarh';
++------------+-----------+----------+-----------+--------------+---------+------------+-----------------+
+| first_name | last_name | address  | city      | state        | zip     | phone      | email           |
++------------+-----------+----------+-----------+--------------+---------+------------+-----------------+
+| Sanju      | joshi     | Sector 1 | raipur    | Chhattisgarh | 494001  | 9845632178 | sanju@email.com |
+| Zoya       | Khan      | Sector 5 | ambikapur | Chhattisgarh | 494221  | 9845634578 | zoya@email.com  |
+| Shalini    | Pandey    | Asna     | jagdalpur | Chhattisgarh | 4942221 | 9845634578 | shalu@email.com |
++------------+-----------+----------+-----------+--------------+---------+------------+-----------------+
+3 rows in set (0.00 sec)
+
+#UC7: Understand The Size of addressbook by City or State
+mysql> select count(state) from address_book
+    -> where state = 'chhattisgarh';
++--------------+
+| count(state) |
++--------------+
+|            3 |
++--------------+
+1 row in set (0.00 sec)
+
+mysql> select count(city) from address_book
+    -> where city = 'jagdalpur';
++-------------+
+| count(city) |
++-------------+
+|           1 |
++-------------+
+1 row in set (0.00 sec)
+
+#UC8: sort by name using state name.
+
+mysql> SELECT * FROM address_book WHERE state = 'Chhattisgarh'
+    -> ORDER BY first_name;
++------------+-----------+----------+-----------+--------------+---------+------------+-----------------+
+| first_name | last_name | address  | city      | state        | zip     | phone      | email           |
++------------+-----------+----------+-----------+--------------+---------+------------+-----------------+
+| Sanju      | joshi     | Sector 1 | raipur    | Chhattisgarh | 494001  | 9845632178 | sanju@email.com |
+| Shalini    | Pandey    | Asna     | jagdalpur | Chhattisgarh | 4942221 | 9845634578 | shalu@email.com |
+| Zoya       | Khan      | Sector 5 | ambikapur | Chhattisgarh | 494221  | 9845634578 | zoya@email.com  |
++------------+-----------+----------+-----------+--------------+---------+------------+-----------------+
+3 rows in set (0.02 sec)
+#UC9  : Alter addressbook to add name and type.
+
+ALTER TABLE address_book ADD name VARCHAR(20);
+ALTER TABLE address_book ADD type VARCHAR(20) DEFAULT 'Friend';
+
+
+#UC10: GET no. of contact person i.e count by type.
+
+SELECT COUNT(type) FROM address_book;
+
+#UC11: ADD PERSON to both friend and family
+
+mysql> INSERT INTO address_book VALUES
+    ->  ( 'Shalini', 'Pandey', 'Asna', 'jagdalpur', 'Chhattisgarh', '4942221', '9845634578', 'shalu@email.com', 'book1', 'Family');
+Query OK, 1 row affected (0.10 sec)
+
+mysql> select * from address_book;
++------------+-----------+------------+-----------+---------------+---------+------------+-----------------+-----------------+--------+
+| first_name | last_name | address    | city      | state         | zip     | phone      | email           | addressbookname | type   |
++------------+-----------+------------+-----------+---------------+---------+------------+-----------------+-----------------+--------+
+| Sanju      | joshi     | Sector 1   | raipur    | Chhattisgarh  | 494001  | 9845632178 | sanju@email.com | NULL            | Friend |
+| Zoya       | Khan      | Sector 5   | ambikapur | Chhattisgarh  | 494221  | 9845634578 | zoya@email.com  | NULL            | Friend |
+| Shalini    | Pandey    | Asna       | jagdalpur | Chhattisgarh  | 4942221 | 9845634578 | shalu@email.com | NULL            | Friend |
+| Aanya      | Pandey    | asokaratan | katni     | MadhyaPradesh | 4920001 | 932974578  | aanya@email.com | NULL            | Friend |
+| Shalini    | Pandey    | Asna       | jagdalpur | Chhattisgarh  | 4942221 | 9845634578 | shalu@email.com | book1           | Family |
++------------+-----------+------------+-----------+---------------+---------+------------+-----------------+-----------------+--------+
+#UC12:ER DIAGRAM
+mysql> CREATE TABLE userdetails
+    -> (
+    -> user_id int NOT NULL,
+    -> first_name      VARCHAR(50) NOT NULL,
+    -> last_name       VARCHAR(50) NOT NULL,
+    -> address         VARCHAR(100) NOT NULL,
+    -> city            VARCHAR(50) NOT NULL,
+    -> state           VARCHAR(50) NOT NULL,
+    -> zip             VARCHAR(10) NOT NULL,
+    -> phone           VARCHAR(15) NOT NULL,
+    -> email           VARCHAR(100) NOT NULL,
+    -> PRIMARY KEY(user_id)
+    -> );
+Query OK, 0 rows affected (2.06 sec)
+
+mysql> describe userdetails;
++------------+--------------+------+-----+---------+-------+
+| Field      | Type         | Null | Key | Default | Extra |
++------------+--------------+------+-----+---------+-------+
+| user_id    | int          | NO   | PRI | NULL    |       |
+| first_name | varchar(50)  | NO   |     | NULL    |       |
+| last_name  | varchar(50)  | NO   |     | NULL    |       |
+| address    | varchar(100) | NO   |     | NULL    |       |
+| city       | varchar(50)  | NO   |     | NULL    |       |
+| state      | varchar(50)  | NO   |     | NULL    |       |
+| zip        | varchar(10)  | NO   |     | NULL    |       |
+| phone      | varchar(15)  | NO   |     | NULL    |       |
+| email      | varchar(100) | NO   |     | NULL    |       |
++------------+--------------+------+-----+---------+-------+
+mysql> create table addressbook_type
+    -> (
+    -> type_id int,
+    -> typeof_addressbook VARCHAR(20),
+    -> PRIMARY KEY(type_id)
+    -> );
+Query OK, 0 rows affected (0.84 sec)
+
+mysql> describe addressbook_type;
++--------------------+-------------+------+-----+---------+-------+
+| Field              | Type        | Null | Key | Default | Extra |
++--------------------+-------------+------+-----+---------+-------+
+| type_id            | int         | NO   | PRI | NULL    |       |
+| typeof_addressbook | varchar(20) | YES  |     | NULL    |       |
++--------------------+-------------+------+-----+---------+-------+
+2 rows in set (0.11 sec)
+ysql> CREATE TABLE user_contact_type_link
+   -> (
+   ->  user_id         INT,
+   ->  type_id         INT,
+   ->  FOREIGN KEY(user_id) REFERENCES userdetails
+   ->  FOREIGN KEY(type_id) REFERENCES addressbook
+   -> );
+uery OK, 0 rows affected (2.47 sec)
+
+ysql> describe user_contact_type_link;
+---------+------+------+-----+---------+-------+
+ Field   | Type | Null | Key | Default | Extra |
+---------+------+------+-----+---------+-------+
+ user_id | int  | YES  | MUL | NULL    |       |
+ type_id | int  | YES  | MUL | NULL    |       |
+---------+------+------+-----+---------+-------+
+mysql> INSERT INTO userdetails VALUES
+    -> ( 1, 'Shaan', 'Raut', 'Sector 1', 'jagdalpur', 'Chhattisgarh', '123456', '9876510123', 'shaan@email.com' ),
+    -> ( 2, 'Sanju', 'joshi', 'Sector 1', 'raipur', 'Chhattisgarh', '494001', '9845632178', 'sanju@email.com' ),
+    -> (3,  'Shalini', 'Pandey', 'Asna', 'jagdalpur', 'Chhattisgarh', '4942221', '9845634578', 'shalu@email.com' );
+Query OK, 3 rows affected (0.28 sec)
+Records: 3  Duplicates: 0  Warnings: 0
+
+mysql> select * from userdetails;
++---------+------------+-----------+----------+-----------+--------------+---------+------------+-----------------+
+| user_id | first_name | last_name | address  | city      | state        | zip     | phone      | email           |
++---------+------------+-----------+----------+-----------+--------------+---------+------------+-----------------+
+|       1 | Shaan      | Raut      | Sector 1 | jagdalpur | Chhattisgarh | 123456  | 9876510123 | shaan@email.com |
+|       2 | Sanju      | joshi     | Sector 1 | raipur    | Chhattisgarh | 494001  | 9845632178 | sanju@email.com |
+|       3 | Shalini    | Pandey    | Asna     | jagdalpur | Chhattisgarh | 4942221 | 9845634578 | shalu@email.com |
++---------+------------+-----------+----------+-----------+--------------+---------+------------+-----------------+
+3 rows in set (0.00 sec)
+
+mysql> INSERT INTO addressbook_type VALUES
+    -> (101,'Friend'),
+    -> (102,'Family');
+
+mysql> select * from addressbook_type;
++---------+--------------------+
+| type_id | typeof_addressbook |
++---------+--------------------+
+|     101 | Friend             |
+|     102 | Family             |
++---------+--------------------+
+2 rows in set (0.00 sec)
+
+mysql> INSERT INTO user_contact_type_link VALUES
+    -> 	(1,101),
+    ->          (1,102),
+    ->          (2,101),
+    ->          (3,102);
+Query OK, 4 rows affected (0.27 sec)
+Records: 4  Duplicates: 0  Warnings: 0
+
+mysql> select * from user_contact_type_link;
++---------+---------+
+| user_id | type_id |
++---------+---------+
+|       1 |     101 |
+|       1 |     102 |
+|       2 |     101 |
+|       3 |     102 |
++---------+---------+
+
+#UC13: RETRIEVE EARLIER queries in new table structure.
+mysql> SELECT COUNT(u.user_id) AS NO_contacts,t.typeof_addressbook
+    -> FROM userdetails u JOIN addressbook_type t JOIN user_contact_type_link l
+    -> WHERE u.user_id = l.user_id
+    -> AND t.type_id = l.type_id
+    -> GROUP BY(t.typeof_addressbook);
++-------------+--------------------+
+| NO_contacts | typeof_addressbook |
++-------------+--------------------+
+|           2 | Friend             |
+|           2 | Family             |
++-------------+--------------------+
+
+
+
+
